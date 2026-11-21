@@ -1,0 +1,8 @@
+{
+  "name": "Bangladesh Kickboxing Association",
+  "description": "Official portal of the Bangladesh Kickboxing Association (BKA) — founded in 1993 by Shihan Mostafizur Rahman Mostafiz and recognised by the National Sports Council (NSC) in 2010.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

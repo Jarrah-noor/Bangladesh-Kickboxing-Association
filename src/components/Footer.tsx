@@ -1,0 +1,121 @@
+import { MapPin, Phone } from 'lucide-react';
+import { ASSOCIATION_FACTS } from '../data/bkaData';
+
+export function Footer() {
+  return (
+    <footer className="bg-[#0C0F12] text-neutral-300 border-t border-white/10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-white/10">
+          <div className="md:col-span-6">
+            <div className="flex items-center gap-3">
+              <img
+                src={ASSOCIATION_FACTS.logo}
+                alt="Official Bangladesh Kickboxing Association Logo"
+                className="w-10 h-10 rounded-full object-cover bg-white border border-white/20 shrink-0"
+              />
+              <p className="font-display text-2xl font-bold tracking-tight text-white">
+                {ASSOCIATION_FACTS.name}
+              </p>
+            </div>
+            <p className="mt-2 text-sm text-neutral-400 max-w-md leading-relaxed">
+              Founded in {ASSOCIATION_FACTS.foundedYear} by{' '}
+              {ASSOCIATION_FACTS.founder}. Recognised by the{' '}
+              {ASSOCIATION_FACTS.nscBody} in{' '}
+              {ASSOCIATION_FACTS.nscRecognitionYear}.
+            </p>
+            <div className="mt-4 flex items-start gap-2 text-sm text-neutral-300 max-w-md">
+              <MapPin
+                className="w-4 h-4 text-[#C8102E] shrink-0 mt-0.5"
+                aria-hidden="true"
+              />
+              <span>{ASSOCIATION_FACTS.headquarters}</span>
+            </div>
+            <div className="mt-2.5 flex items-center gap-2 text-sm text-neutral-300">
+              <Phone
+                className="w-4 h-4 text-[#C8102E] shrink-0"
+                aria-hidden="true"
+              />
+              <a
+                href={`tel:+${ASSOCIATION_FACTS.contactPhone}`}
+                className="font-mono hover:text-white transition-colors tabular-nums"
+              >
+                {ASSOCIATION_FACTS.contactPhone}
+              </a>
+            </div>
+          </div>
+
+          <div className="md:col-span-3">
+            <h3 className="text-xs font-semibold text-white mb-3">
+              Navigation
+            </h3>
+            <ul className="space-y-2 text-sm text-neutral-400">
+              <li>
+                <a href="#heritage" className="hover:text-white transition-colors">
+                  Heritage &amp; Recognition
+                </a>
+              </li>
+              <li>
+                <a href="#disciplines" className="hover:text-white transition-colors">
+                  Official Disciplines
+                </a>
+              </li>
+              <li>
+                <a href="#achievements" className="hover:text-white transition-colors">
+                  2012 Pune Achievement
+                </a>
+              </li>
+              <li>
+                <a href="#calendar" className="hover:text-white transition-colors">
+                  2026–2027 Calendar
+                </a>
+              </li>
+              <li>
+                <a href="#rules" className="hover:text-white transition-colors">
+                  Official Rules &amp; 2026 Updates
+                </a>
+              </li>
+              <li>
+                <a href="#leadership" className="hover:text-white transition-colors">
+                  Leadership
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div className="md:col-span-3">
+            <h3 className="text-xs font-semibold text-white mb-3">
+              Officeholders
+            </h3>
+            <ul className="space-y-2 text-sm text-neutral-400">
+              <li>
+                <span className="text-neutral-200 font-medium">President:</span>{' '}
+                Ishtiaque Abedin
+              </li>
+              <li>
+                <span className="text-neutral-200 font-medium">
+                  General Secretary, Founder &amp; Chief Coach (WAKO Recognized):
+                </span>{' '}
+                Shihan Mostafizur Rahman Mostafiz
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="pt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs text-neutral-500">
+          <div className="space-y-1">
+            <p className="text-neutral-300">
+              © {ASSOCIATION_FACTS.foundedYear}–{new Date().getFullYear()}{' '}
+              {ASSOCIATION_FACTS.name}. All rights reserved.
+            </p>
+            <p>
+              Official emblem, photographs, and publications may not be reproduced without prior written permission.
+            </p>
+          </div>
+          <p>
+            Sanctioned Events: Point Fight · Light Contact · Kick Light · Full Contact · Low Kick · K1 · Musical Form
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
