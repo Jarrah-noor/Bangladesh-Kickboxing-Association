@@ -1,5 +1,5 @@
 import { useEffect, useState, FormEvent } from 'react';
-import { CheckCircle2, AlertCircle, MapPin, Copy, Check, Phone } from 'lucide-react';
+import { CheckCircle2, AlertCircle, MapPin, Copy, Check, Phone, Mail } from 'lucide-react';
 import { ASSOCIATION_FACTS, DISCIPLINES, LEADERSHIP } from '../data/bkaData';
 import { ResilientImage } from './ResilientImage';
 
@@ -29,7 +29,28 @@ export function LeadershipAndContact({
   });
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [needsActivation, setNeedsActivation] = useState<boolean>(false);
   const [addressCopied, setAddressCopied] = useState<boolean>(false);
+
+  const buildMailtoHref = () => {
+    const subject = encodeURIComponent(
+      `[BKA Inquiry] ${form.topic} — ${form.fullName.trim() || 'Athlete'}`
+    );
+    const body = encodeURIComponent(
+      [
+        `Full Name: ${form.fullName.trim()}`,
+        `Contact: ${form.contactInfo.trim()}`,
+        `Club / District: ${form.clubOrDistrict.trim() || 'Individual Athlete'}`,
+        `Primary Discipline: ${form.discipline}`,
+        `Inquiry Category: ${form.topic}`,
+        '',
+        'Details:',
+        form.message.trim(),
+      ].join('\n')
+    );
+    return `mailto:${ASSOCIATION_FACTS.contactEmail}?subject=${subject}&body=${body}`;
+  };
 
   const handleCopyAddress = async () => {
     try {
@@ -48,9 +69,10 @@ export function LeadershipAndContact({
     }
   }, [prefilledTopic]);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
+    setNeedsActivation(false);
 
     if (form.fullName.trim().length < 2) {
       setError('Please enter your full name.');
@@ -70,7 +92,62 @@ export function LeadershipAndContact({
       return;
     }
 
-    setSubmitted(true);
+    setIsSubmitting(true);
+    try {
+      const payload: Record<string, string> = {
+        name: form.fullName.trim(),
+        contact,
+        club_or_district: form.clubOrDistrict.trim() || 'Individual Athlete',
+        discipline: form.discipline,
+        topic: form.topic,
+        message: form.message.trim(),
+        _subject: `[BKA Inquiry] ${form.topic} — ${form.fullName.trim()}`,
+        _template: 'table',
+        _captcha: 'false',
+      };
+      if (isEmail) {
+        payload._replyto = contact;
+      }
+
+      const response = await fetch(
+        `https://formsubmit.co/ajax/${ASSOCIATION_FACTS.contactEmail}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const result = (await response.json().catch(() => ({}))) as {
+        success?: string | boolean;
+        message?: string;
+      };
+
+      const msgText = String(result.message || '').toLowerCase();
+      if (msgText.includes('activat')) {
+        setNeedsActivation(true);
+        setSubmitted(true);
+        return;
+      }
+
+      if (!response.ok || (result.success !== 'true' && result.success !== true)) {
+        setError(
+          'Automatic delivery could not connect right now. Please use the Send via Email App button below.'
+        );
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      setError(
+        'Network delivery could not connect right now. Please use the Send via Email App button below.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -202,6 +279,23 @@ export function LeadershipAndContact({
                 </div>
                 <div>
                   <dt className="text-xs font-medium text-neutral-500">
+                    Official Inquiry Email
+                  </dt>
+                  <dd className="mt-1.5 flex items-center gap-2.5">
+                    <Mail
+                      className="w-4 h-4 text-[#C8102E] shrink-0"
+                      aria-hidden="true"
+                    />
+                    <a
+                      href={`mailto:${ASSOCIATION_FACTS.contactEmail}`}
+                      className="font-mono font-semibold text-[#111317] hover:text-[#C8102E] transition-colors break-all"
+                    >
+                      {ASSOCIATION_FACTS.contactEmail}
+                    </a>
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-medium text-neutral-500">
                     National Recognition
                   </dt>
                   <dd className="mt-0.5 font-semibold text-[#111317]">
@@ -225,11 +319,37 @@ export function LeadershipAndContact({
                   <div className="flex items-center gap-3 text-[#046A38]">
                     <CheckCircle2 className="w-6 h-6 shrink-0" aria-hidden="true" />
                     <h3 className="font-display text-2xl font-bold text-[#111317]">
-                      Inquiry Recorded
+                      {needsActivation
+                        ? 'Activation Email Sent'
+                        : 'Inquiry Sent to Secretariat'}
                     </h3>
                   </div>
                   <p className="text-sm text-neutral-700 leading-relaxed max-w-lg">
-                    Thank you, <strong className="font-semibold text-[#111317]">{form.fullName}</strong>. Your inquiry regarding <strong className="font-semibold text-[#111317]">{form.topic}</strong> ({form.discipline}) has been prepared for the {ASSOCIATION_FACTS.name} Secretariat.
+                    {needsActivation ? (
+                      <>
+                        A one-time form activation link was sent to{' '}
+                        <strong className="font-semibold text-[#111317]">
+                          {ASSOCIATION_FACTS.contactEmail}
+                        </strong>
+                        . Click Activate Form in that email so future inquiries arrive automatically. You can also send this inquiry right away using your email app below.
+                      </>
+                    ) : (
+                      <>
+                        Thank you,{' '}
+                        <strong className="font-semibold text-[#111317]">
+                          {form.fullName}
+                        </strong>
+                        . Your inquiry regarding{' '}
+                        <strong className="font-semibold text-[#111317]">
+                          {form.topic}
+                        </strong>{' '}
+                        ({form.discipline}) has been emailed to{' '}
+                        <strong className="font-semibold text-[#111317]">
+                          {ASSOCIATION_FACTS.contactEmail}
+                        </strong>
+                        .
+                      </>
+                    )}
                   </p>
                   <dl className="mt-4 pt-4 border-t border-neutral-200 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-neutral-600">
                     <div>
@@ -245,17 +365,24 @@ export function LeadershipAndContact({
                       </dd>
                     </div>
                   </dl>
-                  <div className="pt-4">
+                  <div className="pt-4 flex flex-wrap items-center gap-3">
                     <button
                       type="button"
                       onClick={() => {
                         setSubmitted(false);
+                        setNeedsActivation(false);
                         setForm((prev) => ({ ...prev, message: '' }));
                       }}
                       className="px-4 py-2 text-xs font-semibold bg-[#111317] text-white hover:bg-neutral-800 transition-colors cursor-pointer min-h-[40px]"
                     >
                       Submit Another Inquiry
                     </button>
+                    <a
+                      href={buildMailtoHref()}
+                      className="px-4 py-2 text-xs font-semibold border border-neutral-300 bg-white hover:bg-neutral-100 text-[#111317] transition-colors min-h-[40px] inline-flex items-center"
+                    >
+                      Send Copy via Email App
+                    </a>
                   </div>
                 </div>
               ) : (
@@ -409,13 +536,21 @@ export function LeadershipAndContact({
                     />
                   </div>
 
-                  <div className="pt-2">
+                  <div className="pt-2 flex flex-wrap items-center gap-4">
                     <button
                       type="submit"
-                      className="px-6 py-3 text-sm font-semibold bg-[#C8102E] hover:bg-[#A60D26] text-white transition-colors duration-150 cursor-pointer whitespace-nowrap shrink-0 min-h-[44px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111317]"
+                      disabled={isSubmitting}
+                      className="px-6 py-3 text-sm font-semibold bg-[#C8102E] hover:bg-[#A60D26] disabled:opacity-60 text-white transition-colors duration-150 cursor-pointer whitespace-nowrap shrink-0 min-h-[44px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111317]"
                     >
-                      Submit Official Inquiry
+                      {isSubmitting ? 'Sending Inquiry...' : 'Submit Official Inquiry'}
                     </button>
+
+                    <a
+                      href={buildMailtoHref()}
+                      className="text-xs font-semibold text-neutral-600 hover:text-[#111317] underline underline-offset-4 py-2"
+                    >
+                      Or send via Email App
+                    </a>
                   </div>
                 </form>
               )}
