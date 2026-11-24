@@ -1,4 +1,4 @@
-import { MapPin, Phone } from 'lucide-react';
+import { MapPin, Phone, Mail } from 'lucide-react';
 import { ASSOCIATION_FACTS } from '../data/bkaData';
 
 export function Footer() {
@@ -40,6 +40,18 @@ export function Footer() {
                 className="font-mono hover:text-white transition-colors tabular-nums"
               >
                 {ASSOCIATION_FACTS.contactPhone}
+              </a>
+            </div>
+            <div className="mt-2 flex items-center gap-2 text-sm text-neutral-300">
+              <Mail
+                className="w-4 h-4 text-[#C8102E] shrink-0"
+                aria-hidden="true"
+              />
+              <a
+                href={`mailto:${ASSOCIATION_FACTS.contactEmail}`}
+                className="font-mono hover:text-white transition-colors break-all"
+              >
+                {ASSOCIATION_FACTS.contactEmail}
               </a>
             </div>
           </div>
