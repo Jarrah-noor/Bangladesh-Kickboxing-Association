@@ -71,6 +71,7 @@ export const ASSOCIATION_FACTS = {
   headquarters:
     'Room #264, Maulana Bhashani Hockey Stadium, Gulistan Road, Dhaka-1000, Bangladesh',
   contactPhone: '8801711531368',
+  contactEmail: 'home.nirnij@gmail.com',
   nationalTournamentsHosted: 14,
   bestOfBestHosted: 1,
   puneYear: 2012,
