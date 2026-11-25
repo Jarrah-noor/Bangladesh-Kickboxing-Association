@@ -70,7 +70,7 @@ export const ASSOCIATION_FACTS = {
   nscBody: 'National Sports Council (NSC)',
   headquarters:
     'Room #264, Maulana Bhashani Hockey Stadium, Gulistan Road, Dhaka-1000, Bangladesh',
-  contactPhone: '8801711531368',
+  contactPhone: '8801857843854',
   contactEmail: 'home.nirnij@gmail.com',
   nationalTournamentsHosted: 14,
   bestOfBestHosted: 1,
