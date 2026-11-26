@@ -25,7 +25,7 @@ export function HeritageSection() {
                 Following seventeen years of grassroots development and domestic competition, the association achieved formal recognition from the <strong className="font-semibold text-[#111317]">National Sports Council (NSC) in 2010</strong>, integrating kickboxing into Bangladesh&apos;s official national sporting framework.
               </p>
               <p>
-                Today, under President <strong className="font-semibold text-[#111317]">Ishtiaque Abedin</strong> and Founder, General Secretary &amp; WAKO-recognized National Chief Coach <strong className="font-semibold text-[#111317]">Shihan Mostafizur Rahman Mostafiz</strong>, the federation governs seven official competition disciplines and prepares national squads for upcoming Asian and World Cup campaigns.
+                Today, under President <strong className="font-semibold text-[#111317]">Ishtiaque Abedin</strong> and Founder, General Secretary &amp; National Chief Coach <strong className="font-semibold text-[#111317]">Shihan Mostafizur Rahman Mostafiz</strong>, the federation governs seven official competition disciplines and prepares national squads for upcoming Asian and World Cup campaigns.
               </p>
             </div>
           </div>
