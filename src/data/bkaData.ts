@@ -281,8 +281,8 @@ export const LEADERSHIP: Leader[] = [
     initials: 'MR',
     photo: '/assets/aistudio/WhatsApp_Image_2026-11-21_at_11.53.29_770813c7.jpeg',
     photoAlt:
-      'Shihan Mostafizur Rahman Mostafiz, Founder, General Secretary, and WAKO-recognized National National Chief Coach of Official Bangladesh Kickboxing Association',
-    bio: 'Pioneer of kickboxing in Bangladesh who founded the association in 1993 and guided it to National Sports Council (NSC) recognition in 2010. Serving as General Secretary and WAKO-recognized Chief Coach, he directs national squad training, technical standards, and championship pathways.',
+      'Shihan Mostafizur Rahman Mostafiz, Founder, General Secretary, and WAKO-recognized National Chief Coach of Official Bangladesh Kickboxing Association',
+    bio: 'Pioneer of kickboxing in Bangladesh who founded the association in 1993 and guided it to National Sports Council (NSC) recognition in 2010. Serving as General Secretary and WAKO-recognized National Chief Coach, he directs national squad training, technical standards, and championship pathways.',
   },
 ];
 
