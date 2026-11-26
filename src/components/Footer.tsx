@@ -105,7 +105,7 @@ export function Footer() {
               </li>
               <li>
                 <span className="text-neutral-200 font-medium">
-                  General Secretary, Founder &amp; National Chief Coach (WAKO Recognized):
+                  General Secretary, Founder &amp; National Chief Coach :
                 </span>{' '}
                 Shihan Mostafizur Rahman Mostafiz
               </li>
